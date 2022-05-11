@@ -36,6 +36,7 @@ namespace RestClientVS
             var width = General.Instance.ResponseWindowWidth;
 
             Grid grid = new();
+            Themes.SetUseVsTheme(grid, true);
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(5, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(width, GridUnitType.Pixel), MinWidth = 150 });
@@ -55,6 +56,7 @@ namespace RestClientVS
             };
             splitter.DragCompleted += RightDragCompleted;
 
+            Themes.SetUseVsTheme(splitter, true);
             grid.Children.Add(splitter);
             Grid.SetColumn(splitter, 1);
             Grid.SetRow(splitter, 0);

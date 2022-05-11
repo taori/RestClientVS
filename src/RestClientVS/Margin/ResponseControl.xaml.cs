@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Converters;
 using Newtonsoft.Json.Linq;
 using RestClient.Client;
 
