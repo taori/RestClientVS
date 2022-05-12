@@ -60,7 +60,6 @@ namespace RestClientVS
             grid.Children.Add(splitter);
             Grid.SetColumn(splitter, 1);
             Grid.SetRow(splitter, 0);
-
             Action fixWidth = new(() =>
             {
                 // previewWindow maxWidth = current total width - textView minWidth
