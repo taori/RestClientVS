@@ -31,18 +31,17 @@
             <Label Content="23ms" Style="{StaticResource LabelGoodState}"/>
         </StackPanel>
 
-        <ToolBar Style="{StaticResource ToolBarStyle}" Grid.Row="1" Margin="0,0,0,5">
-            <Button ToolTip="Repeat request">
-                <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.StartWebSite}"  />
-            </Button>
-
-            <Button ToolTip="Copy response">
-                <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.Copy}" />
-            </Button>
-        </ToolBar>
-
+            <ToolBar Style="{StaticResource ToolBarStyle}">
+                <Button ToolTip="Repeat request">
+                    <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.StartWebSite}"/>
+                </Button>
+                <Button ToolTip="Copy response">
+                    <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.Copy}"/>
+                </Button>
+            </ToolBar>
+        </StackPanel>
+        
         <TabControl Grid.Row="2"
-                    Background="{DynamicResource {x:Static platform:EnvironmentColors.DockTargetButtonBackgroundGradientBrushKey}}"
                     toolkit:Themes.UseVsTheme="True">
             
             <TabItem Header="Raw"
