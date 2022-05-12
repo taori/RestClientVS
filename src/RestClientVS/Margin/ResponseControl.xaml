@@ -16,7 +16,8 @@
     <UserControl.Resources>
         <ResourceDictionary Source="pack://application:,,,/RestClientVS;component/Resources/Resources.xaml"/>
     </UserControl.Resources>
-    <Grid Background="{DynamicResource {x:Static platform:EnvironmentColors.DockTargetButtonBackgroundGradientBrushKey}}">
+    <Grid Background="{DynamicResource {x:Static platform:EnvironmentColors.DockTargetButtonBackgroundGradientBrushKey}}"
+          platform:ImageThemingUtilities.ImageBackgroundColor="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushToColorConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -31,15 +32,17 @@
             <Label Content="23ms" Style="{StaticResource LabelGoodState}"/>
         </StackPanel>
 
-            <ToolBar Style="{StaticResource ToolBarStyle}">
-                <Button ToolTip="Repeat request">
-                    <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.StartWebSite}"/>
-                </Button>
-                <Button ToolTip="Copy response">
-                    <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.Copy}"/>
-                </Button>
-            </ToolBar>
-        </StackPanel>
+        <ToolBar Style="{StaticResource ToolBarStyle}">
+            <Button ToolTip="Repeat request">
+                <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.StartWebSite}"/>
+            </Button>
+            <Button ToolTip="Copy response">
+                <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.Copy}"/>
+            </Button>
+            <Button ToolTip="Settings">
+                <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.Settings}"/>
+            </Button>
+        </ToolBar>
         
         <TabControl Grid.Row="2"
                     toolkit:Themes.UseVsTheme="True">

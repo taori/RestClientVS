@@ -372,6 +372,7 @@
     <Style TargetType="Label" x:Key="LabelGoodState">
         <Setter Property="Foreground" Value="Green"></Setter>
     </Style>
+
     <Style TargetType="TabControl">
         <Setter Property="BorderThickness" Value="0"></Setter>
         <Setter Property="Template">
@@ -387,18 +388,18 @@
                             <RowDefinition x:Name="RowDefinition1" Height="*"/>
                         </Grid.RowDefinitions>
                         <TabPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
-                        <Border x:Name="contentPanel" 
-                                Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Grid.Column="0" 
-                                Grid.Row="1" 
-                                KeyboardNavigation.DirectionalNavigation="Contained" 
-                                KeyboardNavigation.TabIndex="2" 
+                        <Border x:Name="contentPanel"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                KeyboardNavigation.DirectionalNavigation="Contained"
+                                KeyboardNavigation.TabIndex="2"
                                 KeyboardNavigation.TabNavigation="Local">
-                            <ContentPresenter x:Name="PART_SelectedContentHost" 
-                                              ContentSource="SelectedContent" 
-                                              Margin="{TemplateBinding Padding}" 
+                            <ContentPresenter x:Name="PART_SelectedContentHost"
+                                              ContentSource="SelectedContent"
+                                              Margin="{TemplateBinding Padding}"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
                     </Grid>
@@ -441,6 +442,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="TabItem">
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBorderBrushKey}}" />
         <Setter Property="Background" Value="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBackgroundBrushKey}}" />
