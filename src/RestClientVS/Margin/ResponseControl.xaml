@@ -8,15 +8,13 @@
              mc:Ignorable="d" 
              xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
              xmlns:imaging1="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
-             xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Imaging"
              xmlns:platformUi1="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities"
+             xmlns:shell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+             xmlns:platform="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
              toolkit:Themes.UseVsTheme="True"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <platformUi1:BrushToColorConverter x:Key="BrushToColorConverter"></platformUi1:BrushToColorConverter>
-        <Style TargetType="Label" x:Key="LabelGoodState">
-            <Setter Property="Foreground" Value="Green"></Setter>
-        </Style>
+        <ResourceDictionary Source="pack://application:,,,/RestClientVS;component/Resources/Resources.xaml"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,23 +34,22 @@
             <!--
                     platformUi:ImageThemingUtilities.ImageBackgroundColor="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushToColorConverter}}">-->
 
-            <Button ToolTip="Repeat request" >
-                <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.StartWebSite}"/>
-            </Button>
-            <Button ToolTip="Copy response" Margin="5,0,0,0">
-                <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.Copy}"/>
-            </Button>
+            <ToolBar Style="{StaticResource ToolBarStyle}">
+                <Button ToolTip="Repeat request">
+                    <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.StartWebSite}"/>
+                </Button>
+                <Button ToolTip="Copy response">
+                    <imaging:CrispImage Moniker="{x:Static imaging1:KnownMonikers.Copy}"/>
+                </Button>
+            </ToolBar>
         </StackPanel>
-        <TabControl Grid.Row="2" 
+        
+        <TabControl Grid.Row="2"
                     toolkit:Themes.UseVsTheme="True">
-
-            <TabItem Header="Headers" 
+            
+            <TabItem Header="Raw"
                      toolkit:Themes.UseVsTheme="True">
-                <TextBlock Text="just some text"></TextBlock>
-            </TabItem>
-            <TabItem Header="Response" 
-                     toolkit:Themes.UseVsTheme="True">
-                <TextBox Name="Control" 
+                <TextBox Name="Control"
                          HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -63,7 +60,15 @@
                          Focusable="True"
                          FontFamily="Cascadia Mono"/>
             </TabItem>
-            <TabItem Header="Cookies" 
+            <TabItem Header="Headers"
+                     toolkit:Themes.UseVsTheme="True">
+                <TextBlock Text="just some text"></TextBlock>
+            </TabItem>
+            <TabItem Header="Response"
+                     toolkit:Themes.UseVsTheme="True">
+                <TextBlock Text="just some text"></TextBlock>
+            </TabItem>
+            <TabItem Header="Cookies"
                      toolkit:Themes.UseVsTheme="True">
                 <TextBlock Text="just some text"></TextBlock>
             </TabItem>
