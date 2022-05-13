@@ -14,7 +14,7 @@
              toolkit:Themes.UseVsTheme="True"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <ResourceDictionary Source="pack://application:,,,/RestClientVS;component/Resources/Resources.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/RestClientVS;component/UI/Resources.xaml"/>
     </UserControl.Resources>
     <Grid Background="{DynamicResource {x:Static platform:EnvironmentColors.DockTargetButtonBackgroundGradientBrushKey}}"
           platform:ImageThemingUtilities.ImageBackgroundColor="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushToColorConverter}}">
@@ -45,6 +45,7 @@
         </ToolBar>
         
         <TabControl Grid.Row="2"
+                    BorderThickness="0"
                     toolkit:Themes.UseVsTheme="True">
             
             <TabItem Header="Raw"

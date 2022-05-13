@@ -6,11 +6,13 @@
     xmlns:platform="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:shell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:utils="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities" 
-    >
+    xmlns:utils="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities"
+    xmlns:extensions="clr-namespace:RestClientVS.UI.Extensions;assembly=RestClientVS"
+    xmlns:platformUi="clr-namespace:Microsoft.Internal.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
 
     <system:Double x:Key="IndentSize">19</system:Double>
     <utils:BrushToColorConverter x:Key="BrushToColorConverter" />
+    <platformUi:IndentToMarginConverter x:Key="IndentConverter"/>
 
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Focusable" Value="False"/>
@@ -373,8 +375,104 @@
         <Setter Property="Foreground" Value="Green"></Setter>
     </Style>
 
-    <Style TargetType="TabControl">
-        <Setter Property="BorderThickness" Value="0"></Setter>
+
+    <Style x:Key="TabControlItemTemplatedStyle" TargetType="{x:Type TabItem}">
+        <Setter Property="Padding" Value="0"></Setter>
+        <Setter Property="extensions:TabItemExtensions.DefaultTabTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="TabItem">
+                    <Border
+                        Background="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBackgroundBrushKey}}"
+                        Padding="8,3"
+                        BorderThickness="0,0,0,2"
+                        BorderBrush="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBorderBrushKey}}">
+    
+                        <ContentPresenter Content="{Binding Path=.}"/>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="extensions:TabItemExtensions.HoverTabTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="TabItem">
+                    <Border
+                        Background="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveHoverBackgroundBrushKey}}"
+                        Padding="8,3"
+                        BorderThickness="0,0,0,2"
+                        BorderBrush="{DynamicResource {x:Static platform:CommonDocumentColors.InnerTabActiveIndicatorBrushKey}}">
+    
+                        <ContentPresenter Content="{Binding Path=.}"/>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="extensions:TabItemExtensions.SelectedTabTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="TabItem">
+                    <Border
+                        Background="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabActiveBackgroundBrushKey}}"
+                        Padding="8,3"
+                        BorderThickness="0,0,0,2"
+                        BorderBrush="{DynamicResource {x:Static platform:CommonDocumentColors.InnerTabActiveIndicatorBrushKey}}">
+    
+                        <ContentPresenter Content="{Binding Path=.}"/>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    
+        <Setter Property="HeaderTemplate" Value="{Binding RelativeSource={RelativeSource Self}, Path=(extensions:TabItemExtensions.DefaultTabTemplate), Mode=OneWay}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Border"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                        <ContentControl x:Name="ContentSite" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"></ContentControl>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="ContentSite" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(extensions:TabItemExtensions.SelectedTabTemplate), Mode=OneWay}"></Setter>
+                        </Trigger>
+    
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ContentSite" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(extensions:TabItemExtensions.HoverTabTemplate), Mode=OneWay}"></Setter>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+    
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ContentSite" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(extensions:TabItemExtensions.DefaultTabTemplate), Mode=OneWay}"></Setter>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+    
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
+    <Style x:Key="TabControlExtendedStyle" TargetType="{x:Type TabControl}">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{StaticResource TabItem.Selected.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TabItem.Selected.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
@@ -382,26 +480,31 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="ColumnDefinition0"/>
                             <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                            <ColumnDefinition x:Name="ColumnDefinition2" Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
                             <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            <RowDefinition x:Name="RowDefinition2" Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TabPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
-                        <Border x:Name="contentPanel"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                KeyboardNavigation.DirectionalNavigation="Contained"
-                                KeyboardNavigation.TabIndex="2"
+                        <TabPanel x:Name="headerPanel" Grid.Column="0" IsItemsHost="true" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                        <Border x:Name="contentPanel" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Grid.Column="0" 
+                                Grid.Row="1" 
+                                Grid.ColumnSpan="3"
+                                KeyboardNavigation.DirectionalNavigation="Contained" 
+                                KeyboardNavigation.TabIndex="2" 
                                 KeyboardNavigation.TabNavigation="Local">
-                            <ContentPresenter x:Name="PART_SelectedContentHost"
-                                              ContentSource="SelectedContent"
-                                              Margin="{TemplateBinding Padding}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
+                        <Border x:Name="fillPanel" Grid.Row="0" Grid.Column="2"
+                                BorderBrush="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBorderBrushKey}}"
+                                BorderThickness="0,0,0,2"
+                                Background="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBackgroundBrushKey}}"
+                                />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
@@ -409,7 +512,8 @@
                             <Setter Property="Grid.Row" TargetName="contentPanel" Value="0"/>
                             <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
                             <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
-                            <!-- <Setter Property="Margin" TargetName="headerPanel" Value="2,0,2,2"/> -->
+                            <Setter Property="Margin" TargetName="headerPanel" Value="2,0,2,2"/>
+                            <!-- todo fillPanel handling -->
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Left">
                             <Setter Property="Grid.Row" TargetName="headerPanel" Value="0"/>
@@ -420,8 +524,8 @@
                             <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
                             <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
                             <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                            <!--<Setter Property="Margin" TargetName="headerPanel" Value="2,2,0,2"/>-->
-                            <!-- <Setter Property="Margin" TargetName="headerPanel" Value="0"/> -->
+                            <Setter Property="Margin" TargetName="headerPanel" Value="2,2,0,2"/>
+                            <!-- todo fillPanel handling -->
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Right">
                             <Setter Property="Grid.Row" TargetName="headerPanel" Value="0"/>
@@ -432,9 +536,10 @@
                             <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
                             <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
                             <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                            <!-- <Setter Property="Margin" TargetName="headerPanel" Value="0,2,2,2"/> -->
+                            <Setter Property="Margin" TargetName="headerPanel" Value="0,2,2,2"/>
+                            <!-- todo fillPanel handling -->
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
+                        <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -442,40 +547,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style TargetType="TabItem">
-        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBorderBrushKey}}" />
-        <Setter Property="Background" Value="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveBackgroundBrushKey}}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static platform:CommonControlsColors.InnerTabInactiveTextBrushKey}}" />
-        <Setter Property="Padding" Value="0"></Setter>
-        <Setter Property="HeaderTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Border x:Name="container" Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}},Path=Background}" Padding="4">
-                        <ContentPresenter Content="{TemplateBinding Content}"></ContentPresenter>
-                    </Border>
-
-                    <!-- <DataTemplate.Triggers> -->
-                    <!--     <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}},Path=IsSelected}" Value="True"> -->
-                    <!--         <Setter TargetName="container" Property="Background" Value="{DynamicResource {x:Static platform:EnvironmentColors.ToolWindowTabGradientBrushKey}}"/> -->
-                    <!--     </DataTrigger> -->
-                    <!-- </DataTemplate.Triggers> -->
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platform:EnvironmentColors.ToolWindowTabMouseOverBorderBrushKey}}" />
-                <Setter Property="Background" Value="{DynamicResource {x:Static platform:EnvironmentColors.ToolWindowTabMouseOverBackgroundGradientBrushKey}}" />
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static platform:EnvironmentColors.ToolWindowTabMouseOverTextBrushKey}}" />
-            </Trigger>
-
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platform:EnvironmentColors.ToolWindowTabSelectedBorderBrushKey}}" />
-                <Setter Property="Background" Value="{DynamicResource {x:Static platform:EnvironmentColors.ToolWindowTabSelectedTabBrushKey}}" />
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static platform:EnvironmentColors.ToolWindowTabSelectedTextBrushKey}}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <!-- -->
+    <Style TargetType="TabControl" BasedOn="{StaticResource TabControlExtendedStyle}"/>
+    <Style TargetType="TabItem" BasedOn="{StaticResource TabControlItemTemplatedStyle}"/>
 </ResourceDictionary>
